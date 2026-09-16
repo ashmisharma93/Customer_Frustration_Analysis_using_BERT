@@ -118,23 +118,34 @@ BERT-mini was selected because it provides a good balance between accuracy, mode
 
 ## Project Structure
 
+## Project Structure
+
 ```text
 Customer_Frustration_Analysis_using_BERT/
 │
 ├── User_frustration_app/
+│   ├── saved_model/
+│   │   └── Fine-tuned BERT-mini model files
+│   │
 │   └── app.py
 │
-├── saved_model/
-│   ├── config.json
-│   ├── model.safetensors
-│   ├── tokenizer_config.json
-│   └── ...
+├── data/
+│   └── Dataset files
 │
-├── User_Frustration_Project(2).ipynb
-├── requirements.txt
+├── .gitignore
 ├── README.md
-└── .gitignore
+├── User_Frustration_Project(2).ipynb
+├── new_nb.ipynb
+└── requirements.txt
 ```
+
+- `app.py` — Streamlit application for customer frustration detection
+- `saved_model/` — Fine-tuned BERT-mini model and tokenizer files
+- `data/` — Dataset files used in the project
+- `User_Frustration_Project(2).ipynb` — Model training and evaluation notebook
+- `new_nb.ipynb` — Additional project notebook
+- `requirements.txt` — Required Python dependencies
+- `README.md` — Project documentation
 
 ---
 
