@@ -8,6 +8,14 @@ The project supports single-review prediction, bulk review analysis, confidence 
 
 ---
 
+## Live Demo
+
+Try the deployed application here:
+
+[Customer Frustration Analysis App](https://customer-frustration-bert.streamlit.app/)
+
+---
+
 ## Problem Statement
 
 Manually analyzing thousands of product reviews is time-consuming.
