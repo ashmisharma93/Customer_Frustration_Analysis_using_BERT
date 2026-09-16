@@ -1,7 +1,11 @@
 import os
 import torch
 import streamlit as st
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import (
+    AutoTokenizer,
+    AutoModelForSequenceClassification,
+    TextClassificationPipeline
+)
 import pandas as pd
 import plotly.express as px
 import re
@@ -28,16 +32,9 @@ frustration_keywords = [
 
 
 # ======================= LOAD MODEL ============================
-# @st.cache_resource
-# def load_model():
-#     model = AutoModelForSequenceClassification.from_pretrained("saved_model")
-#     tokenizer = AutoTokenizer.from_pretrained("saved_model")
-#     pipe = TextClassificationPipeline(model=model, tokenizer=tokenizer, return_all_scores=False)
-#     return pipe, tokenizer
 
 @st.cache_resource
 def load_model():
-
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     MODEL_PATH = os.path.join(BASE_DIR, "saved_model")
 
@@ -58,6 +55,7 @@ def load_model():
     )
 
     return pipe, tokenizer
+
 
 pipe, tokenizer = load_model()
 
@@ -91,16 +89,21 @@ uploaded_file = st.file_uploader("Upload a CSV file with reviews", type="csv")
 def highlight_triggers(text):
     try:
         text = str(text)
+
         for phrase in sorted(frustration_keywords, key=lambda x: -len(x)):
             pattern = re.compile(re.escape(phrase), re.IGNORECASE)
+
             text = pattern.sub(
-                r"<span style='background-color:#ffb3b3;padding:3px 8px;border-radius:10px;font-weight:600;color:#a10000;'>\g<0></span>",
+                r"<span style='background-color:#ffb3b3;"
+                r"padding:3px 8px;border-radius:10px;"
+                r"font-weight:600;color:#a10000;'>\g<0></span>",
                 text
             )
-        return text
-    except:
+
         return text
 
+    except Exception:
+        return str(text)
 
 # ======================= SAFE PREDICTOR ============================
 def predict_label_safe(text):
