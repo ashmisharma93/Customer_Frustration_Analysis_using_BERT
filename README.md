@@ -115,8 +115,30 @@ BERT-mini was selected because it provides a good balance between accuracy, mode
 
 ---
 
-## Installation and Usage
 
+## Project Structure
+
+```text
+Customer_Frustration_Analysis_using_BERT/
+│
+├── User_frustration_app/
+│   └── app.py
+│
+├── saved_model/
+│   ├── config.json
+│   ├── model.safetensors
+│   ├── tokenizer_config.json
+│   └── ...
+│
+├── User_Frustration_Project(2).ipynb
+├── requirements.txt
+├── README.md
+└── .gitignore
+
+---
+
+
+## Installation and Usage
 ### 1. Clone the Repository
 
 ```bash
