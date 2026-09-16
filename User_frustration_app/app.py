@@ -1,6 +1,7 @@
 import os
+import torch
 import streamlit as st
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, TextClassificationPipeline
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import pandas as pd
 import plotly.express as px
 import re
@@ -179,7 +180,7 @@ if uploaded_file is not None:
                            file_name="frustration_predictions.csv", mime='text/csv')
 
     except Exception as e:
-        st.error(f"❌ Something went wrong: {str(e)}")
+        st.error(f"Something went wrong: {str(e)}")
 
 # ======================= FOOTER ============================
 st.markdown("---")

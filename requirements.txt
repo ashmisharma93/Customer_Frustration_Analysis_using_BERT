@@ -1,5 +1,8 @@
 streamlit
-transformers
 torch
+transformers
 pandas
 numpy
+scikit-learn
+plotly
+sentencepiece
