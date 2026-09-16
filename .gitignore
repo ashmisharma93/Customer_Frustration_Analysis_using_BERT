@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.env
+.streamlit/secrets.toml
+.vscode/
+
+saved_model_old/
+test.csv
+linear_svm_model.pkl
+tfidf_vectorizer.pkl
+model.h5
