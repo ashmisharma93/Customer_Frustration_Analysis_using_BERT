@@ -5,8 +5,12 @@ __pycache__/
 .streamlit/secrets.toml
 .vscode/
 
+bert_mini_frustration_model_v2_productsplit/
 saved_model_old/
+saved_model_v1
+train.csv
 test.csv
 linear_svm_model.pkl
 tfidf_vectorizer.pkl
 model.h5
+manual_labeling_ANSWER_KEY_dont_open_yet.csv

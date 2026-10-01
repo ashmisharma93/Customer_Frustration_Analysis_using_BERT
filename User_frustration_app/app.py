@@ -10,7 +10,7 @@ import pandas as pd
 import plotly.express as px
 import re
 
-# ======================= CONFIG ============================
+# CONFIG 
 MAX_LEN = 128
 
 # Frustration keywords
@@ -31,7 +31,7 @@ frustration_keywords = [
 ]
 
 
-# ======================= LOAD MODEL ============================
+# LOAD MODEL 
 
 @st.cache_resource
 def load_model():
@@ -59,12 +59,12 @@ def load_model():
 
 pipe, tokenizer = load_model()
 
-# ======================= APP UI ============================
+# APP UI 
 st.set_page_config(page_title="User Frustration Predictor", layout="centered")
 st.title("User Frustration Prediction")
 st.markdown("Enter a product review, and this app will tell you whether the customer was **frustrated** or not.")
 
-# ======================= REVIEW INPUT ============================
+# REVIEW INPUT 
 review = st.text_area("Write your review here:", height=150)
 
 if st.button("Predict Frustration Level"):
@@ -75,17 +75,16 @@ if st.button("Predict Frustration Level"):
         label = prediction['label']
         score = prediction['score']
 
-        if label == "LABEL_1":
+        if label == "Frustrated":
             st.error(f" Not satisfied (Confidence: {score:.2%})")
         else:
             st.success(f"Satisfied (Confidence: {score:.2%})")
 
-# ======================= FILE UPLOAD ============================
-st.markdown("## 📄 Bulk Prediction (Upload CSV)")
+# FILE UPLOAD
+st.markdown("## Bulk Prediction (Upload CSV)")
 uploaded_file = st.file_uploader("Upload a CSV file with reviews", type="csv")
 
-
-# ======================= TRIGGER HIGHLIGHTER ============================
+# TRIGGER HIGHLIGHTER 
 def highlight_triggers(text):
     try:
         text = str(text)
@@ -105,7 +104,7 @@ def highlight_triggers(text):
     except Exception:
         return str(text)
 
-# ======================= SAFE PREDICTOR ============================
+# SAFE PREDICTOR 
 def predict_label_safe(text):
     try:
         tokens = tokenizer.tokenize(str(text))
@@ -113,12 +112,12 @@ def predict_label_safe(text):
             tokens = tokens[:MAX_LEN]
             text = tokenizer.convert_tokens_to_string(tokens)
         result = pipe(text)[0]['label']
-        return "Frustrated" if result == "LABEL_1" else "Not Frustrated"
+        return "Frustrated" if result == "Frustrated" else "Not Frustrated"
     except Exception as e:
         return f"ERROR: {str(e)}"
 
 
-# ======================= BULK HANDLER ============================
+# BULK HANDLER
 if uploaded_file is not None:
     try:
         df = pd.read_csv(uploaded_file)
@@ -131,12 +130,12 @@ if uploaded_file is not None:
         if long_count > 0:
             st.warning(f"{long_count} reviews were longer than {MAX_LEN} tokens and were truncated.")
 
-        with st.spinner("🔍 Analyzing reviews..."):
+        with st.spinner("Analyzing reviews..."):
             df['Frustration_Prediction'] = df[review_column].apply(predict_label_safe)
             df['Highlighted_Review'] = df[review_column].apply(highlight_triggers)
 
-        # ======================= HIGHLIGHTED REVIEWS ============================
-        st.markdown("### 🔍 Highlighted Reviews with Predictions")
+        # HIGHLIGHTED REVIEWS
+        st.markdown("### Highlighted Reviews with Predictions")
         for _, row in df.head(10).iterrows():
             st.markdown(f"<h4 style='margin-bottom:4px;'>Prediction:</h4>", unsafe_allow_html=True)
 
@@ -173,7 +172,7 @@ if uploaded_file is not None:
             st.markdown("<hr style='margin-top:25px;'>", unsafe_allow_html=True)
 
 
-        # ======================= DOWNLOAD ============================
+        # DOWNLOAD
         def convert_df(df):
             return df.to_csv(index=False).encode('utf-8')
 
