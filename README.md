@@ -4,7 +4,10 @@
 
 An NLP-based application that detects frustrated customers from product reviews using a fine-tuned BERT-mini model.
 
-The application allows users to analyze individual reviews or upload multiple reviews through a Streamlit interface. It also shows prediction confidence and highlights words that may indicate frustration. A major part of this project was investigating the quality of the training labels. The initial labels were created using keywords, which gave very high accuracy. After manually checking a separate set of reviews, I found that the actual performance was much lower. This README documents both results.
+The application allows users to analyze individual reviews or upload multiple reviews through a Streamlit interface. It also shows prediction confidence and highlights words that may indicate frustration.
+
+A major part of this project was investigating the quality of the training labels. The initial labels were created using keywords, which gave very high accuracy. After manually checking a separate set of reviews, I found that the actual performance was much lower. This README documents both results.
+
 ---
 
 ## Live Demo
@@ -127,52 +130,70 @@ BERT-mini was selected for a good balance of accuracy, model size, and inference
 
 
 ---
-
 ## Results
-The most important finding from this project is the difference between the two accuracy scores:
-- **Keyword-labeled accuracy: 96.1%**
 
+The most important finding from this project is the difference between the two accuracy scores:
+
+- **Keyword-labeled accuracy: 96.1%**
 - **Manual validation accuracy: ~74%**
-There is a gap of around 22 percentage points.
+
+There is a gap of around **22 percentage points**.
 
 This happened because the model was trained using keyword-based labels. As a result, the model can learn patterns that are closely related to those keywords without necessarily understanding every type of customer frustration.
 
-- **Product-level validation**: I also used leave-one-product-out cross-validation with a TF-IDF + Logistic Regression model.
-The accuracy remained around 94.5%–95.7% on the two largest products. Based on these results, boAt Rockerz 255 was selected as the final held-out test product.
+### Product-Level Validation
+
+I also used **leave-one-product-out cross-validation** with a TF-IDF + Logistic Regression model.
+
+The accuracy remained around **94.5%–95.7%** on the two largest products. Based on these results, `boAt Rockerz 255` was selected as the final held-out test product.
 
 This means the final test product was not selected simply because it produced a good result. It was selected after checking performance across different products.
 
-- **Model confidence**: The model also showed an important confidence problem.
+### Model Confidence
 
-For predictions where the model was 90%+ confident (or 10% or lower), the actual accuracy was only 79.2%.
+The model also showed an important confidence problem.
+
+For predictions where the model was **90%+ confident** (or **10% or lower**), the actual accuracy was only **79.2%**.
 
 So, when the model says it is highly confident, that confidence does not always match its actual accuracy.
 
-- **Common failure pattern**: The model often misses complaints that are written calmly and do not contain strong emotional words.
+### Common Failure Pattern
+
+The model often misses complaints that are written calmly and do not contain strong emotional words.
 
 For example:
+
 ```text
 "The earphones keep disconnecting randomly during calls."
 ```
-The model may classify this as Not Frustrated, even though the customer is clearly describing a product problem.
+
+The model may classify this as **Not Frustrated**, even though the customer is clearly describing a product problem.
 
 On the other hand, the model can detect some forms of sarcasm, such as:
+
 ```text
 "Oh wonderful, another pair that stopped working in a week."
 ```
 
-So the main problem is not simply the absence of emotional words. The model seems to struggle particularly with mild, factual complaints.
+So the main problem is not simply the absence of emotional words. The model seems to struggle particularly with **mild, factual complaints**.
 
-- **Baseline comparison**: The simpler TF-IDF models performed surprisingly close to BERT-mini on the keyword-labeled test set:
-  - TF-IDF + Logistic Regression: 93.6%
-  - TF-IDF + SVM: 93.2%
-  - BERT-mini: 96.1%
+### Baseline Comparison
 
-This small difference suggests that the task is strongly influenced by the words used in the reviews. BERT did not provide a huge improvement over the simpler models.
+The simpler TF-IDF models performed relatively close to BERT-mini on the keyword-labeled test set:
 
-- **Manual validation limitation**:The manual validation set contains 174 reviews and was labeled by a single person.
+| Model | Accuracy |
+|---|---:|
+| TF-IDF + Logistic Regression | 93.6% |
+| TF-IDF + SVM | 93.2% |
+| BERT-mini | **96.1%** |
 
-Because the sample is relatively small, the ~74% accuracy should be treated as an estimate rather than an exact measurement.
+The difference between the models is relatively small. This suggests that the task is strongly influenced by the words used in the reviews, and BERT did not provide a very large improvement over the simpler models.
+
+### Manual Validation Limitation
+
+The manual validation set contains **174 reviews** and was labeled by a single person.
+
+Because the sample is relatively small, the **~74% accuracy** should be treated as an estimate rather than an exact measurement.
 
 ## Tech Stack
 
